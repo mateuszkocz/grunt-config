@@ -1,0 +1,10 @@
+.css-main {
+	color: blue;
+	animation-delay: 3s
+}
+.css-img {
+	background-image: url('../images/css.gif');
+}
+.yolo {
+	color: red;
+}

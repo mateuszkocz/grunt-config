@@ -1,0 +1,7 @@
+{
+  "name": "application-frame",
+  "private": true,
+  "dependencies": {
+    "ractive": "~0.5.6"
+  }
+}
