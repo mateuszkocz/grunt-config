@@ -75,7 +75,7 @@ module.exports = function ( grunt ) {
 			// running special tasks.
 			livereload: {
 				options: {
-					livereload: config.livereloadPort
+					livereload: '<%= config.livereloadPort %>'
 				},
 				files: [
 					'<%= config.app %>/{,*/}*.html',
@@ -88,8 +88,8 @@ module.exports = function ( grunt ) {
 		connect: {
 			// Basic connection options.
 			options: {
-				port: config.port,
-				livereload: config.livereloadPort,
+				port: '<%= config.port %>',
+				livereload: '<%= config.livereloadPort %>',
 
 				// Open a browser.
 				open: true,
@@ -105,8 +105,8 @@ module.exports = function ( grunt ) {
 					middleware: function ( connect ) {
 						return [
 							connect.static( '.tmp' ),
-							connect().use( config.lib, connect.static( config.components ) ),
-							connect.static( config.app )
+							connect().use( '<%= config.lib %>', connect.static( '<%= config.components %>' ) ),
+							connect.static( '<%= config.app %>' )
 						]
 					}
 				}
@@ -115,19 +115,19 @@ module.exports = function ( grunt ) {
 			// Starts a local server with a distribution version of the app.
 			local: {
 				options: {
-					base: config.dist,
+					base: '<%= config.dist %>',
 					livereload: false,
 
 					// Makes it visible from the outside
-					hostname: config.hostname,
-					port: config.remotePort
+					hostname: '<%= config.hostname %>',
+					port: '<%= config.remotePort %>'
 				}
 			}
 		},
 
 		// Documentation: https://github.com/gruntjs/grunt-contrib-clean
 		clean: {
-			// Clear the .tmp catalogue and the distribution's target catalogue.
+			// Clean the .tmp catalogue and the distribution's target catalogue.
 			dist: {
 				files: [
 					{
@@ -140,7 +140,7 @@ module.exports = function ( grunt ) {
 					}
 				]
 			},
-			// Just clean the .tmp catalogue
+			// Just clean the .tmp catalogue.
 			server: '.tmp'
 		},
 
@@ -152,10 +152,10 @@ module.exports = function ( grunt ) {
 					{
 						expand: true,
 						dot: true,
-						cwd: config.app,
-						dest: config.dist,
+						cwd: '<%= config.app %>',
+						dest: '<%= config.dist %>',
 						src: [
-							'{,*/}*.html', // FIXME: htmlmin should process and move the files
+							'{,*/}*.html', // FIXME: htmlmin should process and move the files, except for the index file.
 							'*.{ico,png,txt,md}', // Favicons and text files
 							'images/{,*/}*.webp', // .webp is not minified by the imagemin.
 							'fonts/{,*/}*.*',
@@ -169,6 +169,8 @@ module.exports = function ( grunt ) {
 					}
 				]
 			},
+
+			// Copy .css files to the temp directory, so they can be later processed.
 			styles: {
 				expand: true,
 				dot: true,
@@ -176,6 +178,8 @@ module.exports = function ( grunt ) {
 				dest: '.tmp/styles/',
 				src: '{,*/}*.css'
 			},
+
+			// Copy .js files to the temp directory, so they can be later processed.
 			scripts: {
 				expand: true,
 				dot: true,
@@ -187,13 +191,10 @@ module.exports = function ( grunt ) {
 
 		// Documentation: https://github.com/gruntjs/grunt-contrib-less
 		less: {
-			options: {
-
-
-			},
+			options: {},
 			development: {
 				options: {
-					sourceMap: true
+					sourceMap: true // FIXME: doesn't generate a map.
 					// TODO: more source map options to allow editing in the file
 				},
 				files: {
@@ -212,10 +213,13 @@ module.exports = function ( grunt ) {
 			options: {
 				browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1']
 			},
+
+			// The plugin requires a target.
 			dist: {
 				files: [
 					{
 						expand: true,
+						dot: true,
 						cwd: '.tmp/styles/',
 						src: '{,*/}*.css',
 						dest: '.tmp/styles/'
@@ -239,7 +243,7 @@ module.exports = function ( grunt ) {
 			}
 		},
 
-		// Reads HTML for usemin blocks to enable smart builds that automatically
+		// Reads the HTML for usemin blocks to enable smart builds that automatically
 		// concat, minify and revision files. Creates configurations in memory so
 		// additional tasks can operate on them
 		// Documentation: https://github.com/yeoman/grunt-usemin
@@ -344,18 +348,23 @@ module.exports = function ( grunt ) {
 		// Documentation: https://github.com/gruntjs/grunt-contrib-htmlmin
 		htmlmin: {
 			options: {
-				collapseBooleanAttributes: true,
-				removeAttributeQuotes: true,
-				removeCommentsFromCDATA: true,
-				removeEmptyAttributes: true,
-				removeOptionalTags: true,
-				removeRedundantAttributes: true,
-				useShortDoctype: true,
-				minifyJS: true,
-				minifyCSS: true
+					removeComments: true,
+					removeCommentsFromCDATA: true,
+					useShortDoctype: true,
+					collapseBooleanAttributes: true,
+					removeRedundantAttributes: true,
+					removeScriptTypeAttributes: true,
+					removeStyleLinkTypeAttributes: true,
+					removeAttributeQuotes: true,
+					removeEmptyAttributes: true,
+					removeOptionalTags: true
 			},
 			dist: {
 				options: {
+					collapseWhitespace: true,
+					conservativeCollapse: true,
+					minifyJS: true,
+					minifyCSS: true
 				},
 				files: [
 					{
@@ -367,16 +376,13 @@ module.exports = function ( grunt ) {
 				]
 			},
 			debug: {
-				options: {
-					collapseWhitespace: false,
-					conservativeCollapse: false
-				},
+				options: {},
 				files: [
 					{
 						expand: true,
-						cwd: config.dist,
+						cwd: '<%= config.dist %>',
 						src: '{,*/}*.html',
-						dest: config.dist
+						dest: '<%= config.dist %>'
 					}
 				]
 			}
@@ -385,43 +391,64 @@ module.exports = function ( grunt ) {
 		// Documentation: https://github.com/sindresorhus/grunt-concurrent
 		concurrent: {
 			development: [
+				// Copy styles, so they can be autoprefixed.
+				'copy:styles',
+
+				// Compile the development version of less files.
 				'less:development'
-				//'copy:styles' // FIXME: why copying the styles? They should be accessible anyway.
 			],
 			dist: [
+				// Images minification.
 				'imagemin',
 				'svgmin',
+
+				// Styles coompilation and related tasks.
 				'copy:styles',
 				'less:dist',
-				'copy:scripts'
 
+				// SCripts compilation and related tasks.
+				'copy:scripts'
 				// TODO: JS processors...
 			]
 		}
 	} );
 
-	// Make the run task default.
+	// Make the run task the default.
 	grunt.registerTask( 'default', function () {
 		grunt.task.run( 'run' );
 	} );
 
 	// The run task starts a development server.
 	grunt.registerTask( 'run', [
+		// Clean the temp catalogue.
 		'clean:server',
+
+		// Preprocessors.
 		'concurrent:development',
+
+		// Autoprefix CSS files.
 		'autoprefixer',
+
+		// Create the development server.
 		'connect:development',
+
+		// Run the watch task.
 		'watch'
 	] );
 
 	// Alias tasks for distribution and debug build environments.
+	// TODO: the dist task should do more than just build the app.
+	// Eg. add version in package.json, put the git tag, create a package
+	// or upload the files on a server.
 	grunt.registerTask( 'dist', ['build:dist'] );
 	grunt.registerTask( 'dist-debug', ['build:debug'] );
 
 	// The build task. By default builds a release ready application.
 	grunt.registerTask( 'build', 'Build the app', function ( env ) {
+		// Check for a debug request ( can be done by --debug and build:debug );
 		var debug = grunt.option('debug') || env === 'debug';
 
+		// Make required changes when the debug build was requested.
 		if ( debug ) {
 			grunt.log.writeln( 'Debug build initiated.' );
 
@@ -441,19 +468,38 @@ module.exports = function ( grunt ) {
 		}
 
 		grunt.task.run( [
+			// Clean the temp and distribution catalogues.
 			'clean:dist',
+
+			// Make necessary preparations for other tasks.
 			'useminPrepare',
+
+			// Do some paralel tasks, such as preprocessors compilation.
 			'concurrent:dist',
+
+			// Vendor-prefix the CSS
 			'autoprefixer',
+
+			// Combine scripts and styles to make a single file for each.
 			'concat',
+
+			// Minify the style sheet.
 			'cssmin',
+
+			// Minify the script file.
 			'uglify',
+
+			// Copy static assets, such as fonts or text files.
 			'copy:dist',
+
+			// Rename the files to avoid cashe issues.
 			'rev',
-			'usemin',
-			'htmlmin' // TODO: same with the two below.
+
+			// Wraps up many usefull things.
+			'usemin'
 		] );
 
+		// Run the HTML minification according to the requested type of the build.
 		if ( debug ) grunt.task.run( 'htmlmin:debug' );
 		else grunt.task.run( 'htmlmin:dist' );
 

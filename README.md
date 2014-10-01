@@ -16,5 +16,5 @@ Ideas:
 * GIT support (eg. fetching from remotes when watch task active)
 
 Bugs:
-* LLibraries, that are accessible with path /libraries in the watch task are
+* Libraries, that are accessible with path /libraries in the watch task are
   unreachable when building.

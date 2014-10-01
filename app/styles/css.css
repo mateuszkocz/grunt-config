@@ -1,10 +1,18 @@
-.css-main {
-	color: blue;
+/* TEST: autoprefixer. */
+.autoprefixer {
 	animation-delay: 3s
 }
-.css-img {
-	background-image: url('../images/css.gif');
+
+/* TEST: Main CSS file inclusion. */
+.css-main {
+	color: green;
+	animation-delay: 3s
 }
-.yolo {
-	color: red;
+
+/* TEST: CSS image name rewrite by the rev task. */
+.css-img {
+	display: inline-block;
+	background-image: url('../images/css-img.png');
+	width: 20px;
+	height: 20px;
 }

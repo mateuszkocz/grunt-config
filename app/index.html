@@ -6,20 +6,33 @@
 
 	<!-- build:css(.tmp) styles/main.css -->
 	<link rel="stylesheet" href="styles/css.css" type="text/css" >
+	<link rel="stylesheet" href="styles/css/sub.css" type="text/css" >
 	<link rel="stylesheet" href="styles/less.css" type="text/css" >
 	<!-- endbuild -->
 </head>
 <body>
-	<p class="css-main">The CSS file works!</p>
-	<p class="less-main">Main less file works!</p>
-	<p class="less-import">Imported less file works!</p>
-	<div class="css-img" style="width: 100px; height: 100px"></div>
-	<img src="images/img.gif">
+	<h1>Test suite</h1>
+
+	<h2>Styles</h2>
+	<p class="css-main">The main CSS file included.</p>
+	<p class="css-sub">The CSS file in a subcatalogue included.</p>
+	<p class="less-main">Main LESS file included.</p>
+	<p class="less-import">Imported LESS file included.</p>
+
+	<h2>Scripts</h2>
+	<p>Debug mode is <span id="debug-mode">OFF</span></p>
+	<p id="js-main">JS main file is included.</p>
+	<p id="js-subfile">JS file in a subcatalogue is included.</p>
+
+	<h2>Images</h2>
+	<p>HTML image - <img src="images/html-img.png"></p>
+	<p>CSS image - <span class="css-img"></span></p>
+	<p>JS image - <img id="js-img" src=""></p>
 
 	<!-- build:js(.tmp) scripts/scripts.js -->
 	<script src="scripts/main.js"></script>
-	<script src="scripts/support.js"></script>
-	<script src="scripts/sub/subfile.js"></script>
+	<script src="scripts/javascript/subfile.js"></script>
+
 	<script src="libraries/ractive/ractive.js"></script>
 	<!-- endbuild -->
 </body>
