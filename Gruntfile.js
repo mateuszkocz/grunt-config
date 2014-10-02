@@ -105,8 +105,8 @@ module.exports = function ( grunt ) {
 					middleware: function ( connect ) {
 						return [
 							connect.static( '.tmp' ),
-							connect().use( '<%= config.lib %>', connect.static( '<%= config.components %>' ) ),
-							connect.static( '<%= config.app %>' )
+							connect().use( config.lib, connect.static( config.components ) ),
+							connect.static( config.app )
 						]
 					}
 				}
