@@ -61,6 +61,11 @@ module.exports = function ( grunt ) {
 				}
 			},
 
+			coffee: {
+				files: ['<%= config.app %>/scripts/{,*/}*.coffee'],
+				tasks: ['newer:coffee:development']
+			},
+
 			styles: {
 				files: ['<%= config.app %>/styles/{,*/}*.css'],
 				tasks: ['newer:copy:styles', 'autoprefixer']
@@ -79,7 +84,8 @@ module.exports = function ( grunt ) {
 				},
 				files: [
 					'<%= config.app %>/{,*/}*.html',
-					'.tmp/styles/{,*/}*.css'
+					'.tmp/styles/{,*/}*.css',
+					'.tmp/scripts/{,*/}*.js'
 				]
 			}
 		},
@@ -226,6 +232,38 @@ module.exports = function ( grunt ) {
 					}
 				]
 			}
+		},
+
+		// Documentation: https://github.com/gruntjs/grunt-contrib-coffee
+		coffee: {
+			options: {
+				bare: true
+			},
+			distribution: {
+				files: [
+					{
+						expand: true,
+						cwd: '<%= config.app %>/scripts',
+						src: '{,*/}*.coffee',
+						dest: '.tmp/scripts',
+						ext: '.js'
+					}
+				]
+		  },
+			development: {
+				options: {
+					// TODO: source map
+				},
+				files: [
+					{
+						expand: true,
+						cwd: '<%= config.app %>/scripts',
+						src: '{,*/}*.coffee',
+						dest: '.tmp/scripts',
+						ext: '.js'
+					}
+				]
+			},
 		},
 
 		// Documentation: https://github.com/cbas/grunt-rev
@@ -395,7 +433,10 @@ module.exports = function ( grunt ) {
 				'copy:styles',
 
 				// Compile the development version of less files.
-				'less:development'
+				'less:development',
+
+				// Compile the development version of coffee files.
+				'coffee:development'
 			],
 			distribution: [
 				// Images minification.
@@ -407,8 +448,8 @@ module.exports = function ( grunt ) {
 				'less:distribution',
 
 				// SCripts compilation and related tasks.
-				'copy:scripts'
-				// TODO: JS processors...
+				'copy:scripts',
+				'coffee:distribution'
 			]
 		}
 	} );
