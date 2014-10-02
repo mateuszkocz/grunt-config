@@ -128,7 +128,7 @@ module.exports = function ( grunt ) {
 		// Documentation: https://github.com/gruntjs/grunt-contrib-clean
 		clean: {
 			// Clean the .tmp catalogue and the distribution's target catalogue.
-			dist: {
+			distribution: {
 				files: [
 					{
 						dot: true,
@@ -147,7 +147,7 @@ module.exports = function ( grunt ) {
 		// Documentation: https://github.com/gruntjs/grunt-contrib-copy
 		copy: {
 			// Copy files not processed in any other task.
-			dist: {
+			distribution: {
 				files: [
 					{
 						expand: true,
@@ -201,7 +201,7 @@ module.exports = function ( grunt ) {
 					'.tmp/styles/less.css': '<%= config.app %>/styles/index.less'
 				}
 			},
-			dist: {
+			distribution: {
 				files: {
 					'.tmp/styles/less.css': '<%= config.app %>/styles/index.less'
 				}
@@ -215,7 +215,7 @@ module.exports = function ( grunt ) {
 			},
 
 			// The plugin requires a target.
-			dist: {
+			distribution: {
 				files: [
 					{
 						expand: true,
@@ -230,7 +230,7 @@ module.exports = function ( grunt ) {
 
 		// Documentation: https://github.com/cbas/grunt-rev
 		rev: {
-			dist: {
+			distribution: {
 				files: {
 					src: [
 						'<%= config.dist %>/scripts/{,*/}*.js',
@@ -319,7 +319,7 @@ module.exports = function ( grunt ) {
 
 		// Documentation: https://github.com/gruntjs/grunt-contrib-imagemin
 		imagemin: {
-			dist: {
+			distribution: {
 				files: [
 					{
 						expand: true,
@@ -333,7 +333,7 @@ module.exports = function ( grunt ) {
 
 		// Documentation: https://github.com/sindresorhus/grunt-svgmin
 		svgmin: {
-			dist: {
+			distribution: {
 				files: [
 					{
 						expand: true,
@@ -359,7 +359,7 @@ module.exports = function ( grunt ) {
 					removeEmptyAttributes: true,
 					removeOptionalTags: true
 			},
-			dist: {
+			distribution: {
 				options: {
 					collapseWhitespace: true,
 					conservativeCollapse: true,
@@ -397,14 +397,14 @@ module.exports = function ( grunt ) {
 				// Compile the development version of less files.
 				'less:development'
 			],
-			dist: [
+			distribution: [
 				// Images minification.
 				'imagemin',
 				'svgmin',
 
 				// Styles coompilation and related tasks.
 				'copy:styles',
-				'less:dist',
+				'less:distribution',
 
 				// SCripts compilation and related tasks.
 				'copy:scripts'
@@ -440,7 +440,7 @@ module.exports = function ( grunt ) {
 	// TODO: the dist task should do more than just build the app.
 	// Eg. add version in package.json, put the git tag, create a package
 	// or upload the files on a server.
-	grunt.registerTask( 'dist', ['build:dist'] );
+	grunt.registerTask( 'dist', ['build:distribution'] );
 	grunt.registerTask( 'dist-debug', ['build:debug'] );
 
 	// The build task. By default builds a release ready application.
@@ -469,13 +469,13 @@ module.exports = function ( grunt ) {
 
 		grunt.task.run( [
 			// Clean the temp and distribution catalogues.
-			'clean:dist',
+			'clean:distribution',
 
 			// Make necessary preparations for other tasks.
 			'useminPrepare',
 
 			// Do some paralel tasks, such as preprocessors compilation.
-			'concurrent:dist',
+			'concurrent:distribution',
 
 			// Vendor-prefix the CSS
 			'autoprefixer',
@@ -490,7 +490,7 @@ module.exports = function ( grunt ) {
 			'uglify',
 
 			// Copy static assets, such as fonts or text files.
-			'copy:dist',
+			'copy:distribution',
 
 			// Rename the files to avoid cashe issues.
 			'rev',
@@ -501,7 +501,7 @@ module.exports = function ( grunt ) {
 
 		// Run the HTML minification according to the requested type of the build.
 		if ( debug ) grunt.task.run( 'htmlmin:debug' );
-		else grunt.task.run( 'htmlmin:dist' );
+		else grunt.task.run( 'htmlmin:distribution' );
 
 	} );
 };
