@@ -68,16 +68,16 @@ module.exports = function ( grunt ) {
 
 			styles: {
 				files: ['<%= config.app %>/styles/{,*/}*.css'],
-				tasks: ['newer:copy:styles', 'autoprefixer']
+				tasks: ['newer:copy:styles', 'newer:autoprefixer']
 			},
 
 			less: {
 				files: ['<%= config.app %>/styles/{,*/}*.less'],
-				tasks: ['less:development', 'autoprefixer']
+				tasks: ['less:development', 'newer:autoprefixer']
 			},
 
 			// Livereload's options and paths to files that don't require
-			// running special tasks.
+			// running special tasks, or are the outcome of those tasks.
 			livereload: {
 				options: {
 					livereload: '<%= config.livereloadPort %>'
@@ -447,7 +447,7 @@ module.exports = function ( grunt ) {
 				'copy:styles',
 				'less:distribution',
 
-				// SCripts compilation and related tasks.
+				// Scripts compilation and related tasks.
 				'copy:scripts',
 				'coffee:distribution'
 			]
