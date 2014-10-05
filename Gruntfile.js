@@ -23,14 +23,17 @@ module.exports = function ( grunt ) {
 		// The catalogue where Bower libraries are downloaded into.
 		components: 'bower_components',
 
+		// Hostname of the development environment.
+		hostname: 'localhost',
+
 		// Port used to serve application in a browser.
 		port: 9000,
 
 		// Livereload's port
 		livereloadPort: 35729,
 
-		// Hostname to allow remote connections.
-		hostname: '0.0.0.0',
+		// Hostname of the server.
+		remoteHostname: 'localhost',
 
 		// Port used to allow a remote connection to the app's
 		// local server made by the connect:local task.
@@ -81,6 +84,7 @@ module.exports = function ( grunt ) {
 				},
 				files: [
 					'<%= config.app %>/{,*/}*.html',
+          '<%= config.app %>/images/{,*/}*',
 					'.tmp/styles/{,*/}*.css',
 					'.tmp/scripts/{,*/}*.js'
 				]
@@ -95,10 +99,10 @@ module.exports = function ( grunt ) {
 				livereload: '<%= config.livereloadPort %>',
 
 				// Open a browser.
-				open: true,
+				open: false,
 
 				// By default make the app visible only on the computer.
-				hostname: 'localhost'
+				hostname: '<%= config.hostname %>'
 			},
 
 			// Starts a development server.
@@ -116,13 +120,13 @@ module.exports = function ( grunt ) {
 			},
 
 			// Starts a local server with a distribution version of the app.
-			local: {
+			server: {
 				options: {
 					base: '<%= config.dist %>',
 					livereload: false,
 
 					// Makes it visible from the outside
-					hostname: '<%= config.hostname %>',
+					hostname: '<%= config.remoteHostname %>',
 					port: '<%= config.remotePort %>'
 				}
 			}
@@ -453,26 +457,33 @@ module.exports = function ( grunt ) {
 
 	// Make the run task the default.
 	grunt.registerTask( 'default', function () {
-		grunt.task.run( 'run' );
+		// TODO: Rather than starting the development environment, should be used to
+		// test and build the app.
+		grunt.task.run( 'develop' );
 	} );
 
 	// The run task starts a development server.
-	grunt.registerTask( 'run', [
-		// Clean the temp catalogue.
-		'clean:server',
+	grunt.registerTask( 'develop', 'Starts the development tasks.', function() {
+		if ( grunt.option('open') ) grunt.config.set('connect.options.open', true);
 
-		// Preprocessors.
-		'concurrent:development',
+		grunt.task.run([
+			// Clean the temp catalogue.
+			'clean:server',
 
-		// Autoprefix CSS files.
-		'autoprefixer',
+			// Preprocessors.
+			'concurrent:development',
 
-		// Create the development server.
-		'connect:development',
+			// Autoprefix CSS files.
+			'autoprefixer',
 
-		// Run the watch task.
-		'watch'
-	] );
+			// Create the development server.
+			'connect:development',
+
+			// Run the watch task.
+			'watch'
+		])
+	});
+
 
 	// Alias tasks for distribution and debug build environments.
 	// TODO: the dist task should do more than just build the app.
