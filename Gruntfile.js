@@ -452,8 +452,39 @@ module.exports = function ( grunt ) {
 				'copy:scripts',
 				'coffee:distribution'
 			]
+		},
+
+		compress: {
+			options: {
+				archive: 'archive/' +
+								 '<%= pkg.name %>_' +
+								 'v<%= pkg.version %>_' +
+								 '<%= grunt.template.today("yyyy-mm-dd") %>' +
+								 '.zip'
+			},
+			files: {
+				expand: true,
+				dot: true,
+				cwd: '<%= config.dist %>',
+				src: '**',
+				dest: ''
+			}
 		}
 	} );
+
+	// The task renames arhive files adding the md4 check sum.
+	grunt.registerTask( 'rename-archive', 'Adds the md5 checksum to the archive.', function( name ) {
+		var fs = require('fs');
+		var crypto = require('crypto');
+		var md5 = crypto.createHash('md5');
+		var file = grunt.template.process( name );
+		var buffer = fs.readFileSync( file );
+
+		md5.update(buffer);
+
+		grunt.file.copy( file, file.replace('.zip', '_[' + md5.digest('hex') + '].zip' ) );
+		grunt.file.delete( file );
+	});
 
 	// Make the run task the default.
 	grunt.registerTask( 'default', function () {
@@ -517,9 +548,9 @@ module.exports = function ( grunt ) {
 			// automatic configuration, so you can't easily point them to the wanted target.
 			grunt.config.set('uglify.options', grunt.config.get('uglify.debug.options'));
 
-			// TODO: more tasks to use the --debug.
+			// TODO: more tasks to use the --debug, eg. cssmin.
 		} else {
-			grunt.log.writeln( 'Executing a release build.' );
+			grunt.log.writeln( 'Executing a release-ready build.' );
 		}
 
 		grunt.task.run( [
@@ -557,6 +588,20 @@ module.exports = function ( grunt ) {
 		// Run the HTML minification according to the requested type of the build.
 		if ( debug ) grunt.task.run( 'htmlmin:debug' );
 		else grunt.task.run( 'htmlmin:distribution' );
+
+		// Archive this build.
+		if ( grunt.option('archive') ) {
+			var name = grunt.config.get( 'compress.options.archive' );
+
+			if ( debug ) {
+				// Add the -debug to the archive name.
+				name = name.replace('.zip','-debug.zip');
+				grunt.config.set( 'compress.options.archive', name );
+			}
+
+			grunt.task.run( 'compress' );
+			grunt.task.run( 'rename-archive:' + name);
+		}
 
 	} );
 };
