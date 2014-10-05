@@ -484,6 +484,12 @@ module.exports = function ( grunt ) {
 		])
 	});
 
+	// Serve the built version of the application.
+	grunt.registerTask( 'serve', 'Serve the application.', function ( env ) {
+		if ( grunt.option('open') ) grunt.config.set('connect.options.open', true);
+
+		grunt.task.run([ 'build' + (env === 'debug' ? ':debug' : ''), 'connect:server:keepalive' ]);
+	});
 
 	// Alias tasks for distribution and debug build environments.
 	// TODO: the dist task should do more than just build the app.
