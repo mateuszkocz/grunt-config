@@ -1,0 +1,4 @@
+/* TEST: External library import. */
+.css-ext {
+  color: green;
+}

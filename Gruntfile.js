@@ -20,11 +20,8 @@ module.exports = function ( grunt ) {
 		// The build's destination catalogue.
 		dist: 'dist',
 
-		// The path referred to when accessing libraries.
-		lib: '/libraries',
-
 		// The catalogue where Bower libraries are downloaded into.
-		components: './bower_components',
+		components: 'bower_components',
 
 		// Port used to serve application in a browser.
 		port: 9000,
@@ -111,7 +108,7 @@ module.exports = function ( grunt ) {
 					middleware: function ( connect ) {
 						return [
 							connect.static( '.tmp' ),
-							connect().use( config.lib, connect.static( config.components ) ),
+							connect.static( 'bower_components' ),
 							connect.static( config.app )
 						]
 					}

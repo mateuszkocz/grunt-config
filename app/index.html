@@ -4,9 +4,10 @@
 	<meta charset="UTF-8">
 	<title></title>
 
-	<!-- build:css(.tmp) styles/main.css -->
+	<!-- build:css({.tmp,bower_components}) styles/main.css -->
 	<link rel="stylesheet" href="styles/css.css" type="text/css" >
 	<link rel="stylesheet" href="styles/css/sub.css" type="text/css" >
+	<link rel="stylesheet" href="css/ext.css">
 	<link rel="stylesheet" href="styles/less.css" type="text/css" >
 	<!-- endbuild -->
 </head>
@@ -16,8 +17,10 @@
 	<h2>Styles</h2>
 	<p class="css-main">The main CSS file included.</p>
 	<p class="css-sub">The CSS file in a subcatalogue included.</p>
+	<p class="css-ext">External CSS library included.</p>
 	<p class="less-main">Main LESS file included.</p>
 	<p class="less-import">Imported LESS file included.</p>
+	<p class="less-ext">External LESS library included.</p>
 
 	<h2>Scripts</h2>
 	<p>Debug mode is <span id="debug-mode">OFF</span></p>
@@ -27,19 +30,21 @@
 	<p id="coffee-main">Coffee main file is included.</p>
 	<p id="coffee-subfile">Coffee file in a subcatalogue is included.</p>
 
+	<p id="ext-lib">External library included.</p>
+
 	<h2>Images</h2>
 	<p>HTML image - <img src="images/html-img.png"></p>
 	<p>CSS image - <span class="css-img"></span></p>
 	<p>JS image - <img id="js-img" src=""></p>
 
-	<!-- build:js(.tmp) scripts/scripts.js -->
+	<!-- build:js({.tmp,bower_components}) scripts/scripts.js -->
 	<script src="scripts/main.js"></script>
 	<script src="scripts/javascript/subfile.js"></script>
 
 	<script src="scripts/main-cs.js"></script>
 	<script src="scripts/coffee/subfile.js"></script>
 
-	<script src="libraries/ractive/ractive.js"></script>
+	<script src="js/ext-library.js"></script>
 	<!-- endbuild -->
 </body>
 </html>

@@ -3,3 +3,7 @@ dist
 .tmp
 .sass-cache
 bower_components
+bower_components/*
+!bower_components/js/
+!bower_components/css/
+!bower_components/less/
