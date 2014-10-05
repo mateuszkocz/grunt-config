@@ -320,7 +320,7 @@ module.exports = function ( grunt ) {
 			js: ['<%= config.dist %>/scripts/{,*/}*.js']
 		},
 
-		// The concatm uglify and cssmin tasks' options are defined automatically by the usemin
+		// The concat, uglify and cssmin tasks' options are defined automatically by the usemin
 		// task. If you want to add a custom behaviour, read the usemin's docs.
 
 		// Documentation: https://github.com/gruntjs/grunt-contrib-concat
