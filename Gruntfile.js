@@ -193,6 +193,15 @@ module.exports = function ( grunt ) {
 				cwd: '<%= config.app %>/scripts',
 				dest: '.tmp/scripts',
 				src: '{,*/}*.js'
+			},
+
+			// Copy the concatenated styles when the cssmin task is not used.
+			concatStyles: {
+				expand: true,
+				dot: true,
+				cwd: '.tmp/concat',
+				src: 'styles/*.css',
+				dest: '<%= config.dist %>'
 			}
 		},
 
@@ -562,8 +571,6 @@ module.exports = function ( grunt ) {
 			// Set some tasks' options manually here, since they use the usemin's
 			// automatic configuration, so you can't easily point them to the wanted target.
 			grunt.config.set('uglify.options', grunt.config.get('uglify.debug.options'));
-
-			// TODO: more tasks to use the --debug, eg. cssmin.
 		} else {
 			grunt.log.writeln( 'Executing a release-ready build.' );
 		}
@@ -584,8 +591,8 @@ module.exports = function ( grunt ) {
 			// Combine scripts and styles to make a single file for each.
 			'concat',
 
-			// Minify the style sheet.
-			'cssmin',
+			// Minify the style sheet or copy the styles if in the debug mode.
+			debug ? 'cssmin' : 'copy:concatStyles',
 
 			// Minify the script file.
 			'uglify',
@@ -597,12 +604,10 @@ module.exports = function ( grunt ) {
 			'rev',
 
 			// Wraps up many usefull things.
-			'usemin'
-		] );
+			'usemin',
 
-		// Run the HTML minification according to the requested type of the build.
-		if ( debug ) grunt.task.run( 'htmlmin:debug' );
-		else grunt.task.run( 'htmlmin:distribution' );
+			debug ? 'htmlmin:debug' : 'htmlmin:distribution'
+		] );
 
 		// Archive this build.
 		if ( grunt.option('archive') ) grunt.task.run('archive');
