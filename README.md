@@ -65,6 +65,14 @@ task.
 #### `--open`
 Opens the app in the default browser.
 
+## `grunt archive`
+### Description
+Creates an archive of the current build (files in the dist directory). Usually it
+is called in the build task when the `--archive` option is enabled to store the
+fresh version, but can be used alone. In this case the only caveat is that if you
+want to have the "-debug" suffix in the archive's name you need to add the `--debug`
+flag manually.
+
 
 # Configuration
 TODO: Describe the configuration options.
@@ -81,4 +89,6 @@ TODO: Describe the configuration options.
 
 
 # Ideas:
-* GIT support (eg. fetching from remotes when watch task active)
+* GIT support (I) - eg. fetching from remotes when watch task active.
+* GIT support (II) - git init as an option. Also it might be a good idea to
+create a git submodule in the archive directory to store only the builds.

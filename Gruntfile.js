@@ -472,8 +472,9 @@ module.exports = function ( grunt ) {
 		}
 	} );
 
-	// The task renames arhive files adding the md4 check sum.
-	grunt.registerTask( 'rename-archive', 'Adds the md5 checksum to the archive.', function( name ) {
+	// Supporting task that renames arhive files adding the md4 check sum. Shouldn't be
+	// used alone.
+	grunt.registerTask( '_rename-archive', 'Adds the md5 checksum to the archive.', function( name ) {
 		var fs = require('fs');
 		var crypto = require('crypto');
 		var md5 = crypto.createHash('md5');
@@ -485,6 +486,20 @@ module.exports = function ( grunt ) {
 		grunt.file.copy( file, file.replace('.zip', '_[' + md5.digest('hex') + '].zip' ) );
 		grunt.file.delete( file );
 	});
+
+	// Archives the current build (files in the dist directory).
+	grunt.registerTask('archive', 'Creates an archive of the current build.', function() {
+		var name = grunt.config.get( 'compress.options.archive' );
+
+		if ( grunt.option('debug') ) {
+			// Add the -debug to the archive name.
+			name = name.replace('.zip','-debug.zip');
+			grunt.config.set( 'compress.options.archive', name );
+		}
+
+		grunt.task.run( 'compress' );
+		grunt.task.run( '_rename-archive:' + name);
+	})
 
 	// Make the run task the default.
 	grunt.registerTask( 'default', function () {
@@ -590,18 +605,7 @@ module.exports = function ( grunt ) {
 		else grunt.task.run( 'htmlmin:distribution' );
 
 		// Archive this build.
-		if ( grunt.option('archive') ) {
-			var name = grunt.config.get( 'compress.options.archive' );
-
-			if ( debug ) {
-				// Add the -debug to the archive name.
-				name = name.replace('.zip','-debug.zip');
-				grunt.config.set( 'compress.options.archive', name );
-			}
-
-			grunt.task.run( 'compress' );
-			grunt.task.run( 'rename-archive:' + name);
-		}
+		if ( grunt.option('archive') ) grunt.task.run('archive');
 
 	} );
 };
