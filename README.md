@@ -23,6 +23,10 @@ when the liverelod is provided by some other tool (eg. your IDE or text editor).
 #### `--open`
 Opens the app in the default browser.
 
+## `grunt develop:open`
+### Description
+Same as `grunt develop --open`.
+
 ## `grunt build`
 ### Description
 Creates the release-ready version of the application with all scritps and

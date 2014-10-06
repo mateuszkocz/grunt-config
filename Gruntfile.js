@@ -518,8 +518,8 @@ module.exports = function ( grunt ) {
 	} );
 
 	// The run task starts a development server.
-	grunt.registerTask( 'develop', 'Starts the development tasks.', function() {
-		if ( grunt.option('open') ) grunt.config.set('connect.options.open', true);
+	grunt.registerTask( 'develop', 'Starts the development tasks.', function( open ) {
+		if ( grunt.option('open') || open ) grunt.config.set('connect.options.open', true);
 
 		grunt.task.run([
 			// Clean the temp catalogue.
