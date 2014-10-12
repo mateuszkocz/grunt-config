@@ -207,11 +207,13 @@ module.exports = function ( grunt ) {
 
 		// Documentation: https://github.com/gruntjs/grunt-contrib-less
 		less: {
-			options: {},
+			options: {
+				paths: ['<%= config.app %>/styles', 'bower_components']
+			},
 			development: {
 				options: {
-					sourceMap: true // FIXME: doesn't generate a map.
-					// TODO: more source map options to allow editing in the file
+					sourceMap: true,
+					sourceMapFilename: '.tmp/styles/less.css.map', // where file is generated and located
 				},
 				files: {
 					'.tmp/styles/less.css': '<%= config.app %>/styles/index.less'

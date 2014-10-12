@@ -1,11 +1,15 @@
+@import 'vars';
+
 // TEST: inclusion of the main LESS file.
 .less-main {
-	color: green;
+	color: @success;
+	border: blue;
 }
 
-// TEST: import.
+// TEST: sub-file included.
 @import 'less/importing';
 
-// TEST: external library import.
-@bower-path: '../../bower_components';
-@import '@{bower-path}/less/ext';
+// TEST: external library import. Imported from the bower_components folder.
+@import 'less/ext';
+
+/*# sourceMappingURL=/styles/less.css.map */
