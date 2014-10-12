@@ -76,6 +76,11 @@ module.exports = function ( grunt ) {
 				tasks: ['less:development', 'newer:autoprefixer']
 			},
 
+			sass: {
+				files: ['<%= config.app %>/styles/{,*/}*.{sass,scss}'],
+				tasks: ['sass:development', 'newer:autoprefixer']
+			},
+
 			// Livereload's options and paths to files that don't require
 			// running special tasks, or are the outcome of those tasks.
 			livereload: {
@@ -226,6 +231,32 @@ module.exports = function ( grunt ) {
 			}
 		},
 
+		// Documentation: https://github.com/gruntjs/grunt-contrib-sass
+		sass: {
+			options: {
+        sourcemap: true,
+        loadPath: 'bower_components'
+      },
+      development: {
+        files: [{
+          expand: true,
+          cwd: '<%= config.app %>/styles',
+          src: ['*.{scss,sass}'],
+          dest: '.tmp/styles',
+          ext: '.css'
+        }]
+      },
+      distribution: {
+        files: [{
+          expand: true,
+          cwd: '<%= config.app %>/styles',
+          src: ['*.{scss,sass}'],
+          dest: '.tmp/styles',
+          ext: '.css'
+        }]
+      }
+		},
+
 		// Documentation: https://github.com/nDmitry/grunt-autoprefixer
 		autoprefixer: {
 			options: {
@@ -264,7 +295,7 @@ module.exports = function ( grunt ) {
 		  },
 			development: {
 				options: {
-					// TODO: source map
+					sourceMap: true
 				},
 				files: [
 					{
@@ -447,6 +478,9 @@ module.exports = function ( grunt ) {
 				// Compile the development version of less files.
 				'less:development',
 
+				// Compile the development version of sass files.
+				'sass:development',
+
 				// Compile the development version of coffee files.
 				'coffee:development'
 			],
@@ -458,6 +492,7 @@ module.exports = function ( grunt ) {
 				// Styles coompilation and related tasks.
 				'copy:styles',
 				'less:distribution',
+				'sass:distribution',
 
 				// Scripts compilation and related tasks.
 				'copy:scripts',
