@@ -173,11 +173,21 @@ module.exports = function ( grunt ) {
 						cwd: '<%= config.app %>',
 						dest: '<%= config.dist %>',
 						src: [
-							'{,*/}*.html', // FIXME: htmlmin should process and move the files, except for the index file.
+							'{,*/}*.html',
 							'*.{ico,png,txt,md}', // Favicons and text files
 							'images/{,*/}*.webp', // .webp is not minified by the imagemin.
 							'fonts/{,*/}*.*',
 							'assets/{,*/}*.*' // Additional assets the project migh have (like PDFs)
+						]
+					},
+					{
+						// Compiled HTMLs
+						expand: true,
+						dot: true,
+						cwd: '.tmp',
+						dest: '<%= config.dist %>',
+						src: [
+							'{,*/}*.html'
 						]
 					},
 					{
@@ -338,7 +348,11 @@ module.exports = function ( grunt ) {
 			options: {
 				dest: '<%= config.dist %>'
 			},
-			html: '<%= config.app %>/index.html'
+			html: {
+				files: {
+					src: ['<%= config.app %>/index.html','.tmp/index.html']
+				}
+			}
 		},
 
 		// Performs rewrites based on the rev and the useminPrepare configuration
@@ -493,11 +507,6 @@ module.exports = function ( grunt ) {
 						cwd: '<%= config.dist %>',
 						src: '{,*/}*.html',
 						dest: '<%= config.dist %>'
-					},{
-						expand: true,
-						cwd: '.tmp',
-						src: '{,*/}*.html',
-						dest: '<%= config.dist %>'
 					}
 				]
 			},
@@ -507,11 +516,6 @@ module.exports = function ( grunt ) {
 					{
 						expand: true,
 						cwd: '<%= config.dist %>',
-						src: '{,*/}*.html',
-						dest: '<%= config.dist %>'
-					},{
-						expand: true,
-						cwd: '.tmp',
 						src: '{,*/}*.html',
 						dest: '<%= config.dist %>'
 					}

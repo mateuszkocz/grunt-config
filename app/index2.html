@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title></title>
+
+		<!-- build:css({.tmp,bower_components}) styles/main.css -->
+		<link rel="stylesheet" href="styles/css.css" type="text/css" >
+		<link rel="stylesheet" href="styles/css/sub.css" type="text/css" >
+		<link rel="stylesheet" href="css/ext.css">
+		<link rel="stylesheet" href="styles/less.css">
+		<link rel="stylesheet" href="styles/sass.css">
+		<!-- endbuild -->
+</head>
+<body>
+	<h1>Test suite</h1>
+
+	<h2>Styles</h2>
+	<p class="css-main">The main CSS file included.
+	<p class="css-sub">The CSS file in a subcatalogue included.
+	<p class="css-ext">External CSS library included.
+	<p class="less-main">Main LESS file included.
+	<p class="less-import">Imported LESS file included.
+	<p class="less-ext">External LESS library included.
+	<p class="sass-main">Main SASS file included.
+
+	<h2>Scripts</h2>
+	<p>Debug mode is <span id="debug-mode">OFF</span>
+	<p id="js-main">JS main file is included.
+	<p id="js-subfile">JS file in a subcatalogue is included.
+
+	<p id="coffee-main">Coffee main file is included.
+	<p id="coffee-subfile">Coffee file in a subcatalogue is included.
+
+	<p id="ext-lib">External library included.
+
+	<h2>Images</h2>
+	<p>HTML image - <img src="images/html-img.png">
+	<p>CSS image - <span class="css-img"></span>
+	<p>JS image - <img id="js-img" src="">
+
+	<!-- build:js({.tmp,bower_components}) scripts/scripts.js -->
+	<script src="scripts/main.js"></script>
+	<script src="scripts/javascript/subfile.js"></script>
+
+	<script src="scripts/main-cs.js"></script>
+	<script src="scripts/coffee/subfile.js"></script>
+
+	<script src="js/ext-library.js"></script>
+	<!-- endbuild -->
+</body>
+</html>
