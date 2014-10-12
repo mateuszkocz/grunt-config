@@ -61,6 +61,11 @@ module.exports = function ( grunt ) {
 				}
 			},
 
+			jade: {
+				files: ['<%= config.app %>{,*/}*.jade'],
+				tasks: ['newer:jade:development']
+			},
+
 			coffee: {
 				files: ['<%= config.app %>/scripts/{,*/}*.coffee'],
 				tasks: ['newer:coffee:development']
@@ -89,7 +94,8 @@ module.exports = function ( grunt ) {
 				},
 				files: [
 					'<%= config.app %>/{,*/}*.html',
-          '<%= config.app %>/images/{,*/}*',
+					'<%= config.app %>/images/{,*/}*',
+					'.tmp/{,*/}*.html',
 					'.tmp/styles/{,*/}*.css',
 					'.tmp/scripts/{,*/}*.js'
 				]
@@ -426,6 +432,40 @@ module.exports = function ( grunt ) {
 			}
 		},
 
+		jade: {
+			options: {
+				pretty: true // htmlmin deals with the minification.
+			},
+			development: {
+				options: {
+					data: {
+						DEBUG: true
+					}
+				},
+				files: [{
+					expand: true,
+					cwd: '<%= config.app %>',
+					src: '{,*/}*.jade',
+					dest: '.tmp',
+					ext: '.html'
+				}]
+			},
+			distribution: {
+				options: {
+					data: {
+						DEBUG: false
+					}
+				},
+				files: [{
+					expand: true,
+					cwd: '<%= config.app %>',
+					src: '{,*/}*.jade',
+					dest: '.tmp',
+					ext: '.html'
+				}]
+			}
+		},
+
 		// Documentation: https://github.com/gruntjs/grunt-contrib-htmlmin
 		htmlmin: {
 			options: {
@@ -453,6 +493,11 @@ module.exports = function ( grunt ) {
 						cwd: '<%= config.dist %>',
 						src: '{,*/}*.html',
 						dest: '<%= config.dist %>'
+					},{
+						expand: true,
+						cwd: '.tmp',
+						src: '{,*/}*.html',
+						dest: '<%= config.dist %>'
 					}
 				]
 			},
@@ -464,6 +509,11 @@ module.exports = function ( grunt ) {
 						cwd: '<%= config.dist %>',
 						src: '{,*/}*.html',
 						dest: '<%= config.dist %>'
+					},{
+						expand: true,
+						cwd: '.tmp',
+						src: '{,*/}*.html',
+						dest: '<%= config.dist %>'
 					}
 				]
 			}
@@ -472,6 +522,9 @@ module.exports = function ( grunt ) {
 		// Documentation: https://github.com/sindresorhus/grunt-concurrent
 		concurrent: {
 			development: [
+				// Compile the jade files.
+				'jade:development',
+
 				// Copy styles, so they can be autoprefixed.
 				'copy:styles',
 
@@ -615,6 +668,10 @@ module.exports = function ( grunt ) {
 		grunt.task.run( [
 			// Clean the temp and distribution catalogues.
 			'clean:distribution',
+
+			// Compile the jade files beforehand to allow using index.jade as a main file
+			// for usemin.
+			'jade:distribution',
 
 			// Make necessary preparations for other tasks.
 			'useminPrepare',
