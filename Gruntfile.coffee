@@ -653,7 +653,7 @@ module.exports = (grunt) ->
 
 			# Create the require bundle.
 			'uglify:requirejs'
-			#'requirejs:distribution'
+			'requirejs:distribution'
 
 			# Copy static assets, such as fonts or text files.
 			'copy:distribution'
