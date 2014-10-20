@@ -4,10 +4,10 @@ html(lang="en")
 		meta(charset="UTF-8")
 		title Application Foundation
 
-		// build:css({.tmp,bower_components}) styles/main.css
+		// build:css({.tmp,.}) styles/main.css
 		link(rel="stylesheet" href="styles/css.css")
 		link(rel="stylesheet" href="styles/css/sub.css")
-		link(rel="stylesheet" href="css/ext.css")
+		link(rel="stylesheet" href="bower_components/css/ext.css")
 		
 		link(rel="stylesheet" href="styles/less.css")
 
@@ -18,37 +18,43 @@ html(lang="en")
 		h1 Test Suite
 
 		h2 Styles
-		p(class="css-main") The main CSS file included.
-		p(class="css-sub") The CSS file in a subcatalogue included.
-		p(class="css-ext") External CSS library included.
-		p(class="less-main") Main LESS file included.
-		p(class="less-import") Imported LESS file included.
-		p(class="less-ext") External LESS library included.
-		p(class="sass-main") Main SASS file included.
+		p.css-main The main CSS file included.
+		p.css-sub The CSS file in a subcatalogue included.
+		p.css-ext External CSS library included.
+		p.less-main Main LESS file included.
+		p.less-import Imported LESS file included.
+		p.less-ext External LESS library included.
+		p.sass-main Main SASS file included.
 
 		h2 Scripts
 		p Debug mode is
-			span(id="debug-mode") OFF
+			span#debug-mode OFF
 
-		p(id="js-main") JS main file is included.
-		p(id="js-subfile") JS file in a subcatalogue is included.
+		p#js-main JS main file is included.
+		p#js-subfile JS file in a subcatalogue is included.
 
-		p(id="coffee-main") Coffee main file is included.
-		p(id="coffee-subfile") Coffee file in a subcatalogue is included.
+		p#coffee-main Coffee main file is included.
+		p#coffee-subfile Coffee file in a subcatalogue is included.
 
-		p(id="ext-lib") External library included.
+		p#ext-lib External library included.
+
+		p#req-main Loaded require file.
+		p#req-sub Loaded required file in a subcatalogue.
+		p#req-ext Loaded external require file.
 
 		h2 Images
 		p HTML image - <img src="images/html-img.png">
 		p CSS image - <span class="css-img"></span>
 		p JS image - <img id="js-img" src="">
 
-		// build:js({.tmp,bower_components}) scripts/scripts.js
+		// build:js({.tmp,.}) scripts/scripts.js
 		script(src="scripts/main.js")
 		script(src="scripts/javascript/subfile.js")
 
 		script(src="scripts/main-cs.js")
 		script(src="scripts/coffee/subfile.js")
 
-		script(src="js/ext-library.js")
+		script(src="bower_components/js/ext-library.js")
 		// endbuild
+
+		script(src="require.js", data-main="scripts/req-main.js")
