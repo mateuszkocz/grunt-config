@@ -1,6 +1,8 @@
-Application foundation. Strongly based on the Yeoman Webapp.
+# Grunt configuration for various preprocessors
+A grunt configuration for various preprocessors (LESS, SASS, CoffeeScript) and typical workflow (watch, serve, build, archive).
+Based on the good ideas in the Yeoman Webapp project.
 
-# Tasks
+# Available Grunt Tasks
 
 ## `grunt`
 ### Description
@@ -77,22 +79,13 @@ fresh version, but can be used alone. In this case the only caveat is that if yo
 want to have the "-debug" suffix in the archive's name you need to add the `--debug`
 flag manually.
 
-
 # Configuration
 TODO: Describe the configuration options.
 
-
 # Todos
 * TypeScript
-* SASS/SCSS support
-* RequireJS and Browserify support
+* Browserify support
 * Modernizr support
 * Tests
-* Support for templates (HAML, Jade)
-* JSHint (as in the watch task in the Yo Webapp)
-
-
-# Ideas:
-* GIT support (I) - eg. fetching from remotes when watch task active.
-* GIT support (II) - git init as an option. Also it might be a good idea to
-create a git submodule in the archive directory to store only the builds.
+* HAML
+* JSHint (like in the watch task in the Yo Webapp)
