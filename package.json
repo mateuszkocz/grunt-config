@@ -1,6 +1,6 @@
 {
   "name": "application-foundation",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Application foundation",
   "author": "Mateusz Kocz",
   "devDependencies": {
